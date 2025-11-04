@@ -1,0 +1,27 @@
+{
+  "folders": [
+    { "path": "." },                  // ← ルートも登録（.envとrun_all.shを見せる）
+    { "path": "mcp_knowledge" },
+    { "path": "agents_simulation" },
+    { "path": "ui_streamlit" }
+  ],
+  "settings": {
+    // 全体共通設定
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "editor.formatOnSave": true,
+
+    // 各プロジェクト別のインタープリター指定
+    "python.defaultInterpreterPath": "uv",
+    "settings.mcp_knowledge": {
+      "python.defaultInterpreterPath": "${workspaceFolder}/mcp_knowledge/.venv/bin/python"
+    },
+    "settings.agents_simulation": {
+      "python.defaultInterpreterPath": "${workspaceFolder}/agents_simulation/.venv/bin/python"
+    },
+    "settings.ui_streamlit": {
+      "python.defaultInterpreterPath": "${workspaceFolder}/ui_streamlit/.venv/bin/python"
+    }
+  }
+}

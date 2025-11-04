@@ -1,0 +1,39 @@
+{
+    "mcpServers": {
+        "applicant_profile": {
+            "command": "uv",
+            "args": [
+                "run",
+                "./mcp_servers/applicant_profile/server.py"
+            ]
+        },
+        "resume": {
+            "command": "uv",
+            "args": [
+                "run",
+                "./mcp_servers/resume/server.py"
+            ]
+        },
+        "company_mission": {
+            "command": "uv",
+            "args": [
+                "run",
+                "./mcp_servers/company_mission/server.py"
+            ]
+        },
+        "hr_questions": {
+            "command": "uv",
+            "args": [
+                "run",
+                "./mcp_servers/hr_questions/server.py"
+            ]
+        },
+        "dept_questions": {
+            "command": "uv",
+            "args": [
+                "run",
+                "./mcp_servers/dept_questions/server.py"
+            ]
+        }
+    }
+}
