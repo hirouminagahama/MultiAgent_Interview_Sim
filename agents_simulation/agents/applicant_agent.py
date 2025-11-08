@@ -19,5 +19,4 @@ applicant_agent = Agent(
         "必ず applicant_profile ツールを使用して情報を確認してから回答してください。"
     ),
     tools=[applicant_profile],
-    model="global.anthropic.claude-sonnet-4-5-20250929-v1:0",  # モデル指定のみOK
 )

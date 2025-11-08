@@ -1,5 +1,6 @@
 # agents_simulationのMVP
 
+
 ---
 
 # プロジェクト全体構成
@@ -290,7 +291,7 @@ hr_agent = Agent(
         "応募者の回答をよく読み、必要に応じて具体的な事例や数値を求めるフォローアップ質問を生成してください。"
     ),
     tools=[hr_questions],
-    model="bedrock.claude-3-sonnet",
+    model="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
 )
 
 ```
@@ -430,6 +431,10 @@ if __name__ == "__main__":
 
 ---
 
-こんな感じで、このまま `agents_simulation/README.md` にコピペしてもらえば、
 
-プロジェクト全体と MVP の仕様がきれいに共有できると思います 👍
+
+---
+以下にREADMEまとめないよう記載  
+https://chatgpt.com/c/69080320-62c8-8322-a211-b30e1227ce3b  
+Noitonは以下  
+https://www.notion.so/agents_simulation-MVP-2a1416d04fcb803e8caedacb40a7de6a
