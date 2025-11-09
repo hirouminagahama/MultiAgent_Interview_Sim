@@ -1,3 +1,4 @@
+# MVPの最初の構築
 # main_sync.py
 import asyncio
 from typing import Any
