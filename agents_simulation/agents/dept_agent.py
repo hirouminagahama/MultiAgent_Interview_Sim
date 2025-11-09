@@ -1,39 +1,46 @@
+# agents/dept_agent.py
+import os
+from dotenv import load_dotenv
 from strands import Agent, tool
+from agents.mcp_tool_client import call_mcp_tool
+
+# === .env読み込み ===
+load_dotenv()
+MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "bedrock.claude-3-sonnet")
 
 
 @tool
-def dept_questions(query: str) -> str:
+async def dept_questions(context_summary: str = "") -> str:
     """
-    部門責任者が実務スキルや技術的な判断力を確認する質問を生成するツール。
+    ✅ MCPサーバーの dept_questions ツールを非同期で呼び出す。
+    - params={"context_summary": context_summary} をMCPサーバーに渡す。
+    - 🧠 注意：
+      dept_questions サーバーの引数も "context_summary" に統一されている。
+      クライアント側では値を使わないが、I/F整合性維持のため空文字で送る。
     """
-    return (
-        "ありがとうございます。大量データ処理や自動化のご経験は非常に興味深いです。\n\n"
-        "これまでのやり取りを踏まえて、技術的な観点から応募者の実務スキルを確認してください。\n\n"
-        "開発後を見据えたものづくり\n\n"
-        "売り上げや効率化など、ビジネスへの貢献度を意識できているか\n\n"
-        "企業の取り扱い領域に対する専門性\n\n"
-        "社内調整力\n\n"
-        "顧客課題を解決した経験\n\n"
-        "自走力\n\n"
-        "ストレス耐性\n\n"
-        "ベンダーや顧客との調整力\n\n"
-        "客先常駐への適性\n\n"
-        "課題を特定する力\n\n"
-        "仮説を立て、検証する力\n\n"
-        "PDCAを回す力\n\n"
+    return await call_mcp_tool(
+        "dept_questions", "dept_questions", {"context_summary": context_summary}
+    )
+
+
+@tool
+async def company_mission(section: str = "summary") -> str:
+    """
+    ✅ MCPサーバー上の company_mission ツールを非同期で呼び出す。
+    """
+    return await call_mcp_tool(
+        "company_mission", "company_mission", {"section": section}
     )
 
 
 dept_agent = Agent(
     name="DeptAgent",
-    description="部門責任者。実務スキルや技術的な問題解決能力を評価する。",
+    description="開発部門責任者。実務スキルや技術的な問題解決能力を評価する。",
     system_prompt=(
-        "あなたは開発部門の責任者です。応募者との面接を担当します。\n"
-        "人事担当（HR）と一緒に面接を行っており、交互またはランダムに質問します。\n\n"
-        "・あなたの役割は、応募者の技術スキル・問題解決力・設計思考を確認することです。\n"
-        "・直前までの会話ログ（HR, Dept, Applicant の発話）を読んで、必要に応じて質問またはコメントを1つだけ返してください。\n"
-        "・面接全体を終了してよいと判断した場合は、あなたの最後のメッセージの末尾に必ず `<INTERVIEW_DONE>` を付けてください。\n\n"
-        "出力は常に日本語で、自然な面接としてふるまってください。"
+        "あなたは開発部門のマネージャーです。応募者の技術スキルや業務遂行能力を確認するために、"
+        "実務に即した具体的な質問を行います。応募者のこれまでの回答を踏まえ、"
+        "必要に応じて company_mission や dept_questions を参照しながら質問を生成してください。"
     ),
-    tools=[dept_questions],
+    tools=[company_mission, dept_questions],
+    model=MODEL_ID,
 )
