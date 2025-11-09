@@ -1,17 +1,42 @@
+from pathlib import Path
+import json
+import random
 from fastmcp import FastMCP
-import json, os
 
-mcp = FastMCP(name="Knowledge MCP")
+mcp = FastMCP("HRQuestionsServer")
 
 
-@mcp.tool
-def get_knowledge():
-    """登録済みのJSONナレッジを返す"""
-    data_path = os.path.join(os.path.dirname(__file__), "data.json")
-    with open(data_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    return {"data": data}
+def _load_data():
+    with (Path(__file__).parent / "data.json").open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+@mcp.tool()
+def hr_questions(mode: str = "first", applicant_answer: str = "") -> str:
+    """
+    人事が使う質問テンプレート。
+    mode:
+      - first     : オープニング質問
+      - followup  : 応募者回答に基づく深掘り質問
+    """
+    data = _load_data()
+
+    if mode == "first":
+        return (
+            "ありがとうございます。まずは最初の質問をさせていただきます。\n\n"
+            f"**{data.get('first_question', '')}**"
+        )
+
+    templates = data.get("followup_templates", [])
+    base = random.choice(templates) if templates else "もう少し詳しく教えてください。"
+
+    if applicant_answer:
+        return (
+            f"先ほどの回答内容を踏まえて、深掘りさせてください。\n\n"
+            f"応募者回答要約: {applicant_answer[:500]}\n\n{base}"
+        )
+    return base
 
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    mcp.run()

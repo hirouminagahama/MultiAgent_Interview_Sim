@@ -1,4 +1,6 @@
-import logging, json, asyncio
+import logging
+import json
+import asyncio
 from fastmcp import FastMCP, settings
 
 logging.basicConfig(level=logging.INFO)
@@ -11,7 +13,8 @@ mcp = FastMCP.as_proxy(mcp_config, name="MCP Proxy")
 
 
 async def main():
-    await mcp.run_async(transport="http", port=8081, keepalive_timeout=60)
+    # 最新版 FastMCP は keepalive_timeout をサポートしない
+    await mcp.run_async(transport="http", port=8081)
 
 
 if __name__ == "__main__":

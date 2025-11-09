@@ -20,7 +20,7 @@ def dept_questions(query: str) -> str:
         "客先常駐への適性\n\n"
         "課題を特定する力\n\n"
         "仮説を立て、検証する力\n\n"
-        "PDCAを回す力"
+        "PDCAを回す力\n\n"
     )
 
 
